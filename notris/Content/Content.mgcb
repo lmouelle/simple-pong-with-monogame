@@ -13,10 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Fonts/Blox2.ttf
-/importer:
-/processor:
-/build:Fonts/Blox2.ttf
+#begin Fonts/Blox.spritefont
+/importer:FontDescriptionImporter
+/processor:LocalizedFontProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Blox.spritefont
 
 #begin Sounds/476893__bloodpixelhero__chiptune-music.wav
 /importer:WavImporter
@@ -323,11 +325,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Ghost/Z.png
-
-#begin Sprites/README.txt
-/importer:
-/processor:
-/build:Sprites/README.txt
 
 #begin Sprites/Sample/Sample_1.png
 /importer:TextureImporter
