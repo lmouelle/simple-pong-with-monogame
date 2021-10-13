@@ -33,6 +33,8 @@ namespace notris
         protected override void Initialize()
         {
             SetWindowSize();
+            IsMouseVisible = false;
+
             base.Initialize();
         }
 
@@ -58,9 +60,16 @@ namespace notris
 
             mainMusic = Content.Load<Song>(@"Sounds\425556__planetronik__rock-808-beat");
 
-            // TODO: luouelle
-            // Is there a better place to put this?
-            MediaPlayer.Play(mainMusic);
+            //SetMusic();
+        }
+
+        private void SetMusic()
+        {
+            if (MediaPlayer.Queue.ActiveSong != mainMusic)
+            {
+                MediaPlayer.Play(mainMusic);
+            }
+            MediaPlayer.IsRepeating = true;
         }
 
         protected override void Update(GameTime gameTime)
