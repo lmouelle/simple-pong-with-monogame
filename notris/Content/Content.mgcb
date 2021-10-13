@@ -40,12 +40,6 @@
 /processorParam:Quality=Best
 /build:Sounds/425556__planetronik__rock-808-beat.mp3
 
-#begin Sounds/476893__bloodpixelhero__chiptune-music.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sounds/476893__bloodpixelhero__chiptune-music.wav
-
 #begin Sprites/Board/BG_1.png
 /importer:TextureImporter
 /processor:TextureProcessor
