@@ -21,6 +21,8 @@ namespace notris
         public SpriteFont fontBlox;
         public SpriteFont fontBloxSmall;
 
+        private Rectangle MenuRectangle;
+
         public Song mainMusic;
 
         public Game1()
@@ -33,7 +35,9 @@ namespace notris
         protected override void Initialize()
         {
             SetWindowSize();
-            IsMouseVisible = false;
+            //IsMouseVisible = false;
+
+            MenuRectangle = new Rectangle(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2, 200, 200);
 
             base.Initialize();
         }
@@ -96,7 +100,13 @@ namespace notris
             _spriteBatch.Draw(_board, new Vector2(0, 0), Color.White);
 
             // Render fonts
-            _spriteBatch.DrawString(fontBlox, "headline", new Vector2(100, 100), Color.Yellow);
+            _spriteBatch.DrawString(fontBlox, "headline", new Vector2(100, 100), Color.Gray);
+
+            var  mouseState = Mouse.GetState();
+            if (MenuRectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed)
+            {
+                _spriteBatch.DrawString(fontBlox, "Click Me", new Vector2(300, 300), Color.Lime);
+            }
 
             _spriteBatch.End();
 
