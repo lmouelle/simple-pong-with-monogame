@@ -27,6 +27,19 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/BloxSmall.spritefont
 
+#begin Fonts/CourierNew.spritefont
+/importer:FontDescriptionImporter
+/processor:LocalizedFontProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/CourierNew.spritefont
+
+#begin Sounds/425556__planetronik__rock-808-beat.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/425556__planetronik__rock-808-beat.mp3
+
 #begin Sounds/476893__bloodpixelhero__chiptune-music.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
