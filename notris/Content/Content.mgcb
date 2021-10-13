@@ -20,12 +20,12 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Blox.spritefont
 
-#begin Fonts/File.spritefont
+#begin Fonts/BloxSmall.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Fonts/File.spritefont;Fonts/BloxSmall.spritefont
+/build:Fonts/BloxSmall.spritefont
 
 #begin Sounds/476893__bloodpixelhero__chiptune-music.wav
 /importer:WavImporter
