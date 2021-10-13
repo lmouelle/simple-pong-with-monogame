@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 
 namespace notris
@@ -10,8 +11,17 @@ namespace notris
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private const int _windowWidth = 1280;
-        private const int _windowHeight = 720;
+        private const int _windowWidth = 720;
+        private const int _windowHeight = 1280;
+
+        private Texture2D _board;
+        private Texture2D _grayBlock;
+        private Texture2D _blackBlock;
+        public SpriteFont fontCourierNew;
+        public SpriteFont fontBlox;
+        public SpriteFont fontBloxSmall;
+
+        public Song mainMusic;
 
         public Game1()
         {
@@ -22,10 +32,7 @@ namespace notris
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             SetWindowSize();
-
             base.Initialize();
         }
 
@@ -41,13 +48,27 @@ namespace notris
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            _board = Content.Load<Texture2D>(@"Sprites\Board\Board");
+            _grayBlock = Content.Load<Texture2D>(@"Sprites\Board\BG_1");
+            _blackBlock = Content.Load<Texture2D>(@"Sprites\Board\BG_2");
+
+            fontCourierNew = Content.Load<SpriteFont>(@"Fonts\CourierNew");
+            fontBlox = Content.Load<SpriteFont>(@"Fonts\Blox");
+            fontBloxSmall = Content.Load<SpriteFont>(@"Fonts\BloxSmall");
+
+            mainMusic = Content.Load<Song>(@"Sounds\425556__planetronik__rock-808-beat");
+
+            // TODO: luouelle
+            // Is there a better place to put this?
+            MediaPlayer.Play(mainMusic);
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
                 Exit();
+            }
 
             // TODO: Add your update logic here
 
@@ -59,6 +80,16 @@ namespace notris
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            _spriteBatch.Begin();
+
+            // Draw figures
+            _spriteBatch.Draw(_board, new Vector2(0, 0), Color.White);
+
+            // Render fonts
+            _spriteBatch.DrawString(fontBlox, "headline", new Vector2(100, 100), Color.Yellow);
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
