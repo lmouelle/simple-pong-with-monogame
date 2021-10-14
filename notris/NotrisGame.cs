@@ -6,10 +6,10 @@ using System;
 
 namespace notris
 {
-    public class Game1 : Game
+    public class NotrisGame : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        public SpriteBatch _spriteBatch;
 
         private const int _windowWidth = 720;
         private const int _windowHeight = 1280;
@@ -25,7 +25,7 @@ namespace notris
 
         public Song mainMusic;
 
-        public Game1()
+        public NotrisGame()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -34,10 +34,9 @@ namespace notris
 
         protected override void Initialize()
         {
-            SetWindowSize();
-            //IsMouseVisible = false;
+            var level = new LevelComponent(this);
 
-            MenuRectangle = new Rectangle(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2, 200, 200);
+            Components.Add(level);
 
             base.Initialize();
         }
@@ -54,7 +53,6 @@ namespace notris
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _board = Content.Load<Texture2D>(@"Sprites\Board\Board");
             _grayBlock = Content.Load<Texture2D>(@"Sprites\Board\BG_1");
             _blackBlock = Content.Load<Texture2D>(@"Sprites\Board\BG_2");
 
@@ -63,17 +61,6 @@ namespace notris
             fontBloxSmall = Content.Load<SpriteFont>(@"Fonts\BloxSmall");
 
             mainMusic = Content.Load<Song>(@"Sounds\425556__planetronik__rock-808-beat");
-
-            //SetMusic();
-        }
-
-        private void SetMusic()
-        {
-            if (MediaPlayer.Queue.ActiveSong != mainMusic)
-            {
-                MediaPlayer.Play(mainMusic);
-            }
-            MediaPlayer.IsRepeating = true;
         }
 
         protected override void Update(GameTime gameTime)
@@ -93,23 +80,6 @@ namespace notris
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
-            _spriteBatch.Begin();
-
-            // Draw figures
-            _spriteBatch.Draw(_board, new Vector2(0, 0), Color.White);
-
-            // Render fonts
-            _spriteBatch.DrawString(fontBlox, "headline", new Vector2(100, 100), Color.Gray);
-
-            var  mouseState = Mouse.GetState();
-            if (MenuRectangle.Contains(mouseState.X, mouseState.Y) && mouseState.LeftButton == ButtonState.Pressed)
-            {
-                _spriteBatch.DrawString(fontBlox, "Click Me", new Vector2(300, 300), Color.Lime);
-            }
-
-            _spriteBatch.End();
-
             base.Draw(gameTime);
         }
     }
