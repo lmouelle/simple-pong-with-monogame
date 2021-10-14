@@ -14,16 +14,17 @@ namespace notris
         private const int _windowWidth = 720;
         private const int _windowHeight = 1280;
 
-        private Texture2D _board;
+        private Texture2D _blocksBackground;
         private Texture2D _grayBlock;
         private Texture2D _blackBlock;
-        public SpriteFont fontCourierNew;
-        public SpriteFont fontBlox;
-        public SpriteFont fontBloxSmall;
+        public SpriteFont _fontCourierNew;
+        public SpriteFont _fontBlox;
+        public SpriteFont _fontBloxSmall;
 
-        private Rectangle MenuRectangle;
+        public Song _mainMusic;
 
-        public Song mainMusic;
+        public KeyboardState keyboardState;
+        public KeyboardState prevKeyboardState;
 
         public NotrisGame()
         {
@@ -38,6 +39,8 @@ namespace notris
 
             Components.Add(level);
 
+            SetWindowSize();
+
             base.Initialize();
         }
 
@@ -49,18 +52,21 @@ namespace notris
             _graphics.ApplyChanges();
         }
 
+
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _grayBlock = Content.Load<Texture2D>(@"Sprites\Board\BG_1");
             _blackBlock = Content.Load<Texture2D>(@"Sprites\Board\BG_2");
+            _blocksBackground = Content.Load<Texture2D>(@"Sprites\Board\Board");
 
-            fontCourierNew = Content.Load<SpriteFont>(@"Fonts\CourierNew");
-            fontBlox = Content.Load<SpriteFont>(@"Fonts\Blox");
-            fontBloxSmall = Content.Load<SpriteFont>(@"Fonts\BloxSmall");
+            _fontCourierNew = Content.Load<SpriteFont>(@"Fonts\CourierNew");
+            _fontBlox = Content.Load<SpriteFont>(@"Fonts\Blox");
+            _fontBloxSmall = Content.Load<SpriteFont>(@"Fonts\BloxSmall");
 
-            mainMusic = Content.Load<Song>(@"Sounds\425556__planetronik__rock-808-beat");
+            _mainMusic = Content.Load<Song>(@"Sounds\425556__planetronik__rock-808-beat");
+            MediaPlayer.IsRepeating = true;
         }
 
         protected override void Update(GameTime gameTime)
@@ -70,7 +76,8 @@ namespace notris
                 Exit();
             }
 
-            // TODO: Add your update logic here
+            prevKeyboardState = keyboardState;
+            keyboardState = Keyboard.GetState();
 
             base.Update(gameTime);
         }
@@ -79,7 +86,10 @@ namespace notris
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            _spriteBatch.Draw(_blocksBackground, new Vector2(0, 0), Color.White);
+            _spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }
