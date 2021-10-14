@@ -11,7 +11,7 @@ namespace notris
         private GraphicsDeviceManager _graphics;
         public SpriteBatch _spriteBatch;
 
-        private const int _windowWidth = 720;
+        private const int _windowWidth = 820;
         private const int _windowHeight = 1280;
 
         private Texture2D _blocksBackground;
