@@ -74,29 +74,29 @@ namespace project
             }
 
             // Now enforce ball position in screen bounds
-            EnforceGameBounds();
+            EnforceGameBounds(ref _ballPosition, _ballTexture);
 
             base.Update(gameTime);
         }
 
-        private void EnforceGameBounds()
+        private void EnforceGameBounds(ref Vector2 position, Texture2D texture)
         {
-            if (_ballPosition.X > _graphics.PreferredBackBufferWidth - _ballTexture.Width / 2)
+            if (position.X > _graphics.PreferredBackBufferWidth - texture.Width / 2)
             {
-                _ballPosition.X = _graphics.PreferredBackBufferWidth - _ballTexture.Width / 2;
+                position.X = _graphics.PreferredBackBufferWidth - texture.Width / 2;
             }
-            else if (_ballPosition.X < _ballTexture.Width / 2)
+            else if (position.X < texture.Width / 2)
             {
-                _ballPosition.X = _ballTexture.Width / 2;
+                position.X = texture.Width / 2;
             }
 
-            if (_ballPosition.Y > _graphics.PreferredBackBufferHeight - _ballTexture.Height / 2)
+            if (position.Y > _graphics.PreferredBackBufferHeight - texture.Height / 2)
             {
-                _ballPosition.Y = _graphics.PreferredBackBufferHeight - _ballTexture.Height / 2;
+                position.Y = _graphics.PreferredBackBufferHeight - texture.Height / 2;
             }
-            else if (_ballPosition.Y < _ballTexture.Height / 2)
+            else if (position.Y < texture.Height / 2)
             {
-                _ballPosition.Y = _ballTexture.Height / 2;
+                position.Y = texture.Height / 2;
             }
         }
 
