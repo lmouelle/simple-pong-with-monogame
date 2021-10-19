@@ -7,9 +7,16 @@ namespace project
     public class Game1 : Game
     {
         Texture2D _ballTexture;
-
         float _ballSpeed;
         Vector2 _ballPosition;
+
+        Texture2D _lhsPlayerTexture;
+        float _lhsPlayerSpeed;
+        Vector2 _lhsPlayerPosition;
+        
+        Texture2D _rhsPlayerTexture;
+        float _rhsPlayerSpeed;
+        Vector2 _rhsPlayerPosition;
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -28,6 +35,12 @@ namespace project
             _ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
             _ballSpeed = 100f;
 
+            _lhsPlayerPosition = new Vector2(_ballPosition.X - 400, _ballPosition.Y);
+            _lhsPlayerSpeed = 100f;
+
+            _rhsPlayerPosition = new Vector2(_ballPosition.X + 300, _ballPosition.Y);
+            _rhsPlayerSpeed = 100f;
+
             base.Initialize();
         }
 
@@ -36,8 +49,8 @@ namespace project
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             _ballTexture = Content.Load<Texture2D>("ball");
-
-            // TODO: use this.Content to load your game content here
+            _rhsPlayerTexture = Content.Load<Texture2D>("red");
+            _lhsPlayerTexture = Content.Load<Texture2D>("blue");
         }
 
         protected override void Update(GameTime gameTime)
@@ -52,6 +65,7 @@ namespace project
 
             // TODO: Add your update logic here
 
+            
             var kstate = Keyboard.GetState();
             if (kstate.IsKeyDown(Keys.Up))
             {
@@ -72,9 +86,33 @@ namespace project
             {
                 _ballPosition.X += AdjustedBallSpeed();
             }
+            
+
 
             // Now enforce ball position in screen bounds
             EnforceGameBounds(ref _ballPosition, _ballTexture);
+            EnforceGameBounds(ref _lhsPlayerPosition, _lhsPlayerTexture);
+            EnforceGameBounds(ref _rhsPlayerPosition, _rhsPlayerTexture);
+
+            // Check collisions
+            var ballRectangle = new Rectangle((int)_ballPosition.X, (int)_ballPosition.Y, _ballTexture.Width, _ballTexture.Height);
+            var rhsRectangle = new Rectangle((int)_rhsPlayerPosition.X, (int)_rhsPlayerPosition.Y, _rhsPlayerTexture.Width, _rhsPlayerTexture.Height);
+            var lhsRectangle = new Rectangle((int)_lhsPlayerPosition.X, (int)_lhsPlayerPosition.Y, _lhsPlayerTexture.Width, _lhsPlayerTexture.Height);
+
+            if (ballRectangle.Intersects(rhsRectangle))
+            {
+                _ballPosition.X -= AdjustedBallSpeed();
+                //_ballPosition.Y = AdjustedBallSpeed();
+            }
+            else if (lhsRectangle.Intersects(ballRectangle))
+            {
+                _ballPosition.X += AdjustedBallSpeed();
+            }
+            else
+            {
+
+            }
+
 
             base.Update(gameTime);
         }
@@ -117,6 +155,9 @@ namespace project
                               Vector2.One,
                               SpriteEffects.None,
                               0f);
+
+            _spriteBatch.Draw(_rhsPlayerTexture, _rhsPlayerPosition, Color.White);
+            _spriteBatch.Draw(_lhsPlayerTexture, _lhsPlayerPosition, Color.White);
 
             _spriteBatch.End();
 
