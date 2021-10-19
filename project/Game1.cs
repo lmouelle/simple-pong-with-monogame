@@ -57,7 +57,7 @@ namespace project
         {
             float AdjustedBallSpeed()
             {
-                return _ballSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                return _lhsPlayerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -69,25 +69,13 @@ namespace project
             var kstate = Keyboard.GetState();
             if (kstate.IsKeyDown(Keys.Up))
             {
-                _ballPosition.Y -= AdjustedBallSpeed();
+                _lhsPlayerPosition.Y -= AdjustedBallSpeed();
             }
 
             if (kstate.IsKeyDown(Keys.Down))
             {
-                _ballPosition.Y += AdjustedBallSpeed();
+                _lhsPlayerPosition.Y += AdjustedBallSpeed();
             }
-
-            if (kstate.IsKeyDown(Keys.Left))
-            {
-                _ballPosition.X -= AdjustedBallSpeed();
-            }
-
-            if (kstate.IsKeyDown(Keys.Right))
-            {
-                _ballPosition.X += AdjustedBallSpeed();
-            }
-            
-
 
             // Now enforce ball position in screen bounds
             EnforceGameBounds(ref _ballPosition, _ballTexture);
