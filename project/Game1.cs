@@ -100,23 +100,8 @@ namespace project
 
         private void EnforceGameBounds(ref Vector2 position, Texture2D texture)
         {
-            if (position.X > _graphics.PreferredBackBufferWidth - texture.Width / 2)
-            {
-                position.X = _graphics.PreferredBackBufferWidth - texture.Width / 2;
-            }
-            else if (position.X < texture.Width / 2)
-            {
-                position.X = texture.Width / 2;
-            }
-
-            if (position.Y + texture.Height / 2 > _graphics.PreferredBackBufferHeight - texture.Height / 2)
-            {
-                position.Y = _graphics.PreferredBackBufferHeight - texture.Height / 2;
-            }
-            else if (position.Y < texture.Height / 2)
-            {
-                position.Y = texture.Height / 2;
-            }
+            position.X = MathHelper.Clamp(position.X, 0 + (texture.Width / 2), _graphics.PreferredBackBufferWidth - texture.Width);
+            position.Y = MathHelper.Clamp(position.Y, 0 + (texture.Height / 2), _graphics.PreferredBackBufferHeight - texture.Height);
         }
 
         protected override void Draw(GameTime gameTime)
