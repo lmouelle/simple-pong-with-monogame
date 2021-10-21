@@ -11,6 +11,7 @@ namespace project
         
         private Texture2D _ballTexture;
         private Vector2 _ballPosition;
+        private Vector2 _ballVelocity;
 
         private Texture2D _rhsPlayerTexture;
         private Vector2 _rhsPlayerPosition;
@@ -23,7 +24,7 @@ namespace project
         private Keys _lhsPlayerDownKey;
 
         private const float PlayerMoveSpeed = 3f;
-        private const float BallMoveSpeed = 3f;
+        private const float BallMoveSpeed = 0.01f;
 
         public Game1()
         {
@@ -49,6 +50,7 @@ namespace project
             _rhsPlayerDownKey = Keys.S;
             
             _ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+            _ballVelocity = new Vector2(0.01f, 0);
 
             base.Initialize();
         }
@@ -66,10 +68,6 @@ namespace project
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            // Detect collisions and respond
-
-
 
             // Update player position based on keypress
             if (Keyboard.GetState().IsKeyDown(_lhsPlayerUpKey))
@@ -94,6 +92,38 @@ namespace project
             EnforceGameBounds(ref _ballPosition, _ballTexture);
             EnforceGameBounds(ref _lhsPlayerPosition, _lhsPlayerTexture);
             EnforceGameBounds(ref _rhsPlayerPosition, _rhsPlayerTexture);
+
+            // Detect collisions and respond
+            var lhsRect = new Rectangle((int)_lhsPlayerPosition.X, (int)_lhsPlayerPosition.Y, _lhsPlayerTexture.Width, _lhsPlayerTexture.Height);
+            var rhsRect = new Rectangle((int)_rhsPlayerPosition.X, (int)_rhsPlayerPosition.Y, _rhsPlayerTexture.Width, _rhsPlayerTexture.Height);
+            var ballRect = new Rectangle((int)_ballPosition.X, (int)_ballPosition.Y, _ballTexture.Width, _ballTexture.Height);
+
+            if (lhsRect.Intersects(ballRect))
+            {
+                if (ballRect.Left >= lhsRect.Right)
+                {
+                    _ballVelocity += new Vector2(_ballVelocity.X, 0);
+                }
+                if (ballRect.Right >= lhsRect.Left)
+                {
+                    _ballVelocity -= new Vector2(_ballVelocity.Y, 0);
+                }
+            }
+            else if (rhsRect.Intersects(ballRect))
+            {
+
+            }
+            else if (ballRect.Y >= _graphics.PreferredBackBufferHeight) // Bounce off window edge
+            {
+
+            }
+            else if (ballRect.X >= _graphics.PreferredBackBufferWidth)
+            {
+
+            }
+
+            // Bounce the ball
+            _ballPosition = (_ballVelocity * BallMoveSpeed);
 
             base.Update(gameTime);
         }
