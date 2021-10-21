@@ -109,7 +109,7 @@ namespace project
                 position.X = texture.Width / 2;
             }
 
-            if ( > _graphics.PreferredBackBufferHeight - texture.Height / 2)
+            if (position.Y + texture.Height / 2 > _graphics.PreferredBackBufferHeight - texture.Height / 2)
             {
                 position.Y = _graphics.PreferredBackBufferHeight - texture.Height / 2;
             }
