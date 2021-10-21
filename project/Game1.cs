@@ -6,20 +6,24 @@ namespace project
 {
     public class Game1 : Game
     {
-        Texture2D _ballTexture;
-        float _ballSpeed;
-        Vector2 _ballPosition;
-
-        Texture2D _lhsPlayerTexture;
-        float _lhsPlayerSpeed;
-        Vector2 _lhsPlayerPosition;
-        
-        Texture2D _rhsPlayerTexture;
-        float _rhsPlayerSpeed;
-        Vector2 _rhsPlayerPosition;
-
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        
+        private Texture2D _ballTexture;
+        private Vector2 _ballPosition;
+
+        private Texture2D _rhsPlayerTexture;
+        private Vector2 _rhsPlayerPosition;
+        private Keys _rhsPlayerUpKey;
+        private Keys _rhsPlayerDownKey;
+
+        private Texture2D _lhsPlayerTexture;
+        private Vector2 _lhsPlayerPosition;
+        private Keys _lhsPlayerUpKey;
+        private Keys _lhsPlayerDownKey;
+
+        private const float PlayerMoveSpeed = 3f;
+        private const float BallMoveSpeed = 3f;
 
         public Game1()
         {
@@ -32,14 +36,19 @@ namespace project
         {
             // TODO: Add your initialization logic here
 
+            var leftCenterXPos = _graphics.PreferredBackBufferWidth * 0.25f;
+            var rightCenterXPos = _graphics.PreferredBackBufferWidth * 0.75f;
+
+            _lhsPlayerPosition = new Vector2(leftCenterXPos, _graphics.PreferredBackBufferHeight / 2);
+            _rhsPlayerPosition = new Vector2(rightCenterXPos, _graphics.PreferredBackBufferHeight / 2);
+
+            _lhsPlayerDownKey = Keys.Down;
+            _lhsPlayerUpKey = Keys.Up;
+
+            _rhsPlayerUpKey = Keys.W;
+            _rhsPlayerDownKey = Keys.S;
+            
             _ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            _ballSpeed = 100f;
-
-            _lhsPlayerPosition = new Vector2(_ballPosition.X - 400, _ballPosition.Y);
-            _lhsPlayerSpeed = 100f;
-
-            _rhsPlayerPosition = new Vector2(_ballPosition.X + 300, _ballPosition.Y);
-            _rhsPlayerSpeed = 100f;
 
             base.Initialize();
         }
@@ -55,52 +64,36 @@ namespace project
 
         protected override void Update(GameTime gameTime)
         {
-            float AdjustedBallSpeed()
-            {
-                return _lhsPlayerSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            // Detect collisions and respond
 
-            
-            var kstate = Keyboard.GetState();
-            if (kstate.IsKeyDown(Keys.Up))
+
+
+            // Update player position based on keypress
+            if (Keyboard.GetState().IsKeyDown(_lhsPlayerUpKey))
             {
-                _lhsPlayerPosition.Y -= AdjustedBallSpeed();
+                _lhsPlayerPosition -= new Vector2(0, PlayerMoveSpeed);
+            }
+            else if (Keyboard.GetState().IsKeyDown(_lhsPlayerDownKey))
+            {
+                _lhsPlayerPosition += new Vector2(0, PlayerMoveSpeed);
             }
 
-            if (kstate.IsKeyDown(Keys.Down))
+            if (Keyboard.GetState().IsKeyDown(_rhsPlayerUpKey))
             {
-                _lhsPlayerPosition.Y += AdjustedBallSpeed();
+                _rhsPlayerPosition -= new Vector2(0, PlayerMoveSpeed);
+            }
+            else if (Keyboard.GetState().IsKeyDown(_rhsPlayerDownKey))
+            {
+                _rhsPlayerPosition += new Vector2(0, PlayerMoveSpeed);
             }
 
-            // Now enforce ball position in screen bounds
+            // Enforce game borders
             EnforceGameBounds(ref _ballPosition, _ballTexture);
             EnforceGameBounds(ref _lhsPlayerPosition, _lhsPlayerTexture);
             EnforceGameBounds(ref _rhsPlayerPosition, _rhsPlayerTexture);
-
-            // Check collisions
-            var ballRectangle = new Rectangle((int)_ballPosition.X, (int)_ballPosition.Y, _ballTexture.Width, _ballTexture.Height);
-            var rhsRectangle = new Rectangle((int)_rhsPlayerPosition.X, (int)_rhsPlayerPosition.Y, _rhsPlayerTexture.Width, _rhsPlayerTexture.Height);
-            var lhsRectangle = new Rectangle((int)_lhsPlayerPosition.X, (int)_lhsPlayerPosition.Y, _lhsPlayerTexture.Width, _lhsPlayerTexture.Height);
-
-            if (ballRectangle.Intersects(rhsRectangle))
-            {
-                _ballPosition.X -= AdjustedBallSpeed();
-                //_ballPosition.Y = AdjustedBallSpeed();
-            }
-            else if (lhsRectangle.Intersects(ballRectangle))
-            {
-                _ballPosition.X += AdjustedBallSpeed();
-            }
-            else
-            {
-
-            }
-
 
             base.Update(gameTime);
         }
@@ -116,7 +109,7 @@ namespace project
                 position.X = texture.Width / 2;
             }
 
-            if (position.Y > _graphics.PreferredBackBufferHeight - texture.Height / 2)
+            if ( > _graphics.PreferredBackBufferHeight - texture.Height / 2)
             {
                 position.Y = _graphics.PreferredBackBufferHeight - texture.Height / 2;
             }
@@ -126,7 +119,6 @@ namespace project
             }
         }
 
-
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -134,19 +126,9 @@ namespace project
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-            _spriteBatch.Draw(_ballTexture,
-                              _ballPosition,
-                              null,
-                              Color.White,
-                              0f,
-                              new Vector2(_ballTexture.Width / 2, _ballTexture.Height / 2),
-                              Vector2.One,
-                              SpriteEffects.None,
-                              0f);
-
+            _spriteBatch.Draw(_ballTexture, _ballPosition, Color.White);
             _spriteBatch.Draw(_rhsPlayerTexture, _rhsPlayerPosition, Color.White);
             _spriteBatch.Draw(_lhsPlayerTexture, _lhsPlayerPosition, Color.White);
-
             _spriteBatch.End();
 
             base.Draw(gameTime);
