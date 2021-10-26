@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace project
 {
@@ -47,9 +48,8 @@ namespace project
 
             _rhsPlayerUpKey = Keys.W;
             _rhsPlayerDownKey = Keys.S;
-            
-            _ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            _ballVelocity = new Vector2(150, 150);
+
+            ResetBallPosition();
 
             base.Initialize();
         }
@@ -96,8 +96,7 @@ namespace project
             if (_ballPosition.X > maxX || _ballPosition.X < 0)
             {
                 // Ball hit one of the side goals, reset and score
-                _ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-                _ballVelocity = new Vector2(150, 150);
+                ResetBallPosition();
             }
 
             if (_ballPosition.Y > maxY || _ballPosition.Y < 0)
@@ -124,6 +123,19 @@ namespace project
             }
            
             base.Update(gameTime);
+        }
+
+        private void ResetBallPosition()
+        {
+            Random random = new Random();
+            bool movesLeft = random.Next() % 2 == 0;
+            int xPos = movesLeft ? -150 : 150;
+
+            bool movesUp = random.Next() % 2 == 0;
+            int yPos = movesUp ? 150 : -150;
+
+            _ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+            _ballVelocity = new Vector2(xPos, yPos);
         }
 
         private void EnforceGameBounds(ref Vector2 position, Texture2D texture)
