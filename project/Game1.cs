@@ -95,17 +95,15 @@ namespace project
 
             if (_ballPosition.X > maxX || _ballPosition.X < 0)
             {
-                _ballVelocity.X *= -1;
+                // Ball hit one of the side goals, reset and score
+                _ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+                _ballVelocity = new Vector2(150, 150);
             }
+
             if (_ballPosition.Y > maxY || _ballPosition.Y < 0)
             {
                 _ballVelocity.Y *= -1;
             }
-
-            // Enforce game borders
-            EnforceGameBounds(ref _ballPosition, _ballTexture);
-            EnforceGameBounds(ref _lhsPlayerPosition, _lhsPlayerTexture);
-            EnforceGameBounds(ref _rhsPlayerPosition, _rhsPlayerTexture);
 
             // Detect collisions and respond
             var lhsRect = new Rectangle((int)_lhsPlayerPosition.X, (int)_lhsPlayerPosition.Y, _lhsPlayerTexture.Width, _lhsPlayerTexture.Height);
@@ -114,22 +112,18 @@ namespace project
 
             if (lhsRect.Intersects(ballRect))
             {
-                if (ballRect.Left >= lhsRect.Right)
-                {
-                    //_ballVelocity += new Vector2(_ballVelocity.X, 0);
-                }
-                if (ballRect.Right >= lhsRect.Left)
-                {
-                    //_ballVelocity -= new Vector2(_ballVelocity.Y, 0);
-                }
+                _ballVelocity.Y -= 50;
+                _ballVelocity.X += _ballVelocity.X < 0 ? -(50) : 50;
+                _ballVelocity.X *= -1;
             }
             else if (rhsRect.Intersects(ballRect))
             {
-
+                _ballVelocity.Y += 50;
+                _ballVelocity.X += _ballVelocity.X < 0 ? -(50) : 50;
+                _ballVelocity.X *= -1;
             }
-            else if (ballRect.Y >= _graphics.PreferredBackBufferHeight) // Bounce off window edge
+            else if (ballRect.Y >= _graphics.PreferredBackBufferHeight)
             {
-
             }
             else if (ballRect.X >= _graphics.PreferredBackBufferWidth)
             {
