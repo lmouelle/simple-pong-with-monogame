@@ -24,7 +24,6 @@ namespace project
         private Keys _lhsPlayerDownKey;
 
         private const float PlayerMoveSpeed = 3f;
-        private const float BallMoveSpeed = 0.01f;
 
         public Game1()
         {
@@ -50,7 +49,7 @@ namespace project
             _rhsPlayerDownKey = Keys.S;
             
             _ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            _ballVelocity = new Vector2(0.01f, 0);
+            _ballVelocity = new Vector2(150, 150);
 
             base.Initialize();
         }
@@ -88,6 +87,21 @@ namespace project
                 _rhsPlayerPosition += new Vector2(0, PlayerMoveSpeed);
             }
 
+            // Bounce the ball
+            _ballPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * _ballVelocity;
+
+            int maxX = GraphicsDevice.Viewport.Width - _ballTexture.Width;
+            int maxY = GraphicsDevice.Viewport.Height - _ballTexture.Height;
+
+            if (_ballPosition.X > maxX || _ballPosition.X < 0)
+            {
+                _ballVelocity.X *= -1;
+            }
+            if (_ballPosition.Y > maxY || _ballPosition.Y < 0)
+            {
+                _ballVelocity.Y *= -1;
+            }
+
             // Enforce game borders
             EnforceGameBounds(ref _ballPosition, _ballTexture);
             EnforceGameBounds(ref _lhsPlayerPosition, _lhsPlayerTexture);
@@ -102,11 +116,11 @@ namespace project
             {
                 if (ballRect.Left >= lhsRect.Right)
                 {
-                    _ballVelocity += new Vector2(_ballVelocity.X, 0);
+                    //_ballVelocity += new Vector2(_ballVelocity.X, 0);
                 }
                 if (ballRect.Right >= lhsRect.Left)
                 {
-                    _ballVelocity -= new Vector2(_ballVelocity.Y, 0);
+                    //_ballVelocity -= new Vector2(_ballVelocity.Y, 0);
                 }
             }
             else if (rhsRect.Intersects(ballRect))
@@ -122,9 +136,7 @@ namespace project
 
             }
 
-            // Bounce the ball
-            _ballPosition = (_ballVelocity * BallMoveSpeed);
-
+           
             base.Update(gameTime);
         }
 
