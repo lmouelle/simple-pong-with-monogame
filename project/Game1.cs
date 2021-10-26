@@ -110,26 +110,18 @@ namespace project
             var rhsRect = new Rectangle((int)_rhsPlayerPosition.X, (int)_rhsPlayerPosition.Y, _rhsPlayerTexture.Width, _rhsPlayerTexture.Height);
             var ballRect = new Rectangle((int)_ballPosition.X, (int)_ballPosition.Y, _ballTexture.Width, _ballTexture.Height);
 
-            if (lhsRect.Intersects(ballRect))
+            if (lhsRect.Intersects(ballRect) && _ballVelocity.X < 0)
             {
                 _ballVelocity.Y -= 50;
                 _ballVelocity.X += _ballVelocity.X < 0 ? -(50) : 50;
                 _ballVelocity.X *= -1;
             }
-            else if (rhsRect.Intersects(ballRect))
+            else if (rhsRect.Intersects(ballRect) && _ballVelocity.X > 0)
             {
                 _ballVelocity.Y += 50;
                 _ballVelocity.X += _ballVelocity.X < 0 ? -(50) : 50;
                 _ballVelocity.X *= -1;
             }
-            else if (ballRect.Y >= _graphics.PreferredBackBufferHeight)
-            {
-            }
-            else if (ballRect.X >= _graphics.PreferredBackBufferWidth)
-            {
-
-            }
-
            
             base.Update(gameTime);
         }
