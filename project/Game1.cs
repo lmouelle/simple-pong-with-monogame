@@ -18,11 +18,14 @@ namespace project
         private Vector2 _rhsPlayerPosition;
         private Keys _rhsPlayerUpKey;
         private Keys _rhsPlayerDownKey;
+        private int _rhsScore;
 
         private Texture2D _lhsPlayerTexture;
         private Vector2 _lhsPlayerPosition;
         private Keys _lhsPlayerUpKey;
         private Keys _lhsPlayerDownKey;
+        private int _lhsScore;
+
 
         private const float PlayerMoveSpeed = 3f;
 
@@ -89,13 +92,20 @@ namespace project
 
             // Bounce the ball
             _ballPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * _ballVelocity;
-
+            
+            // TODO: Diffence between this and preferred back buffer?
             int maxX = GraphicsDevice.Viewport.Width - _ballTexture.Width;
             int maxY = GraphicsDevice.Viewport.Height - _ballTexture.Height;
 
-            if (_ballPosition.X > maxX || _ballPosition.X < 0)
+            // Ball hit one of the side goals, reset and score
+            if (_ballPosition.X > maxX)
             {
-                // Ball hit one of the side goals, reset and score
+                _rhsScore++;
+                ResetBallPosition();
+            }
+            else if (_ballPosition.X < 0)
+            {
+                _lhsScore++;
                 ResetBallPosition();
             }
 
