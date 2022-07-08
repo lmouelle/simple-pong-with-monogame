@@ -148,12 +148,6 @@ namespace project
             _ballVelocity = new Vector2(xPos, yPos);
         }
 
-        private void EnforceGameBounds(ref Vector2 position, Texture2D texture)
-        {
-            position.X = MathHelper.Clamp(position.X, 0 + (texture.Width / 2), _graphics.PreferredBackBufferWidth - texture.Width);
-            position.Y = MathHelper.Clamp(position.Y, 0 + (texture.Height / 2), _graphics.PreferredBackBufferHeight - texture.Height);
-        }
-
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
