@@ -165,7 +165,7 @@ namespace project
             Vector2 lhsScorePosition = new Vector2(0, 0);
             _spriteBatch.DrawString(_font, _lhsScore.ToString(), lhsScorePosition, Color.White);
 
-            Vector2 rhsScorePosition = new Vector2(Window.ClientBounds.Width - 10, 0);
+            Vector2 rhsScorePosition = new Vector2(Window.ClientBounds.Width - _font.MeasureString(_rhsScore.ToString()).X, 0);
             _spriteBatch.DrawString(_font, _rhsScore.ToString(), rhsScorePosition, Color.White);
 
             _spriteBatch.End();
