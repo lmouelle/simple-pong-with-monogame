@@ -103,12 +103,12 @@ namespace project
             // Ball hit one of the side goals, reset and score
             if (_ballPosition.X > maxX)
             {
-                _rhsScore++;
+                _lhsScore++;
                 ResetBallPosition();
             }
             else if (_ballPosition.X < 0)
             {
-                _lhsScore++;
+                _rhsScore++;
                 ResetBallPosition();
             }
 
