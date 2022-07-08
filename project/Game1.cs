@@ -74,6 +74,17 @@ namespace project
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            HandleKeyPress();
+
+            BounceBall(gameTime);
+
+            HandleCollisions();
+
+            base.Update(gameTime);
+        }
+
+        private void HandleKeyPress()
+        {
             // Update player position based on keypress
             if (Keyboard.GetState().IsKeyDown(_lhsPlayerUpKey))
             {
@@ -92,31 +103,10 @@ namespace project
             {
                 _rhsPlayerPosition += new Vector2(0, PlayerMoveSpeed);
             }
+        }
 
-            // Bounce the ball
-            _ballPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * _ballVelocity;
-            
-            // TODO: Diffence between this and preferred back buffer?
-            int maxX = GraphicsDevice.Viewport.Width - _ballTexture.Width;
-            int maxY = GraphicsDevice.Viewport.Height - _ballTexture.Height;
-
-            // Ball hit one of the side goals, reset and score
-            if (_ballPosition.X > maxX)
-            {
-                _lhsScore++;
-                ResetBallPosition();
-            }
-            else if (_ballPosition.X < 0)
-            {
-                _rhsScore++;
-                ResetBallPosition();
-            }
-
-            if (_ballPosition.Y > maxY || _ballPosition.Y < 0)
-            {
-                _ballVelocity.Y *= -1;
-            }
-
+        private void HandleCollisions()
+        {
             // Detect collisions and respond
             var lhsRect = new Rectangle((int)_lhsPlayerPosition.X, (int)_lhsPlayerPosition.Y, _lhsPlayerTexture.Width, _lhsPlayerTexture.Height);
             var rhsRect = new Rectangle((int)_rhsPlayerPosition.X, (int)_rhsPlayerPosition.Y, _rhsPlayerTexture.Width, _rhsPlayerTexture.Height);
@@ -134,8 +124,33 @@ namespace project
                 _ballVelocity.X += _ballVelocity.X < 0 ? -(50) : 50;
                 _ballVelocity.X *= -1;
             }
-           
-            base.Update(gameTime);
+        }
+
+        private void BounceBall(GameTime gameTime)
+        {
+            // Bounce the ball
+            _ballPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * _ballVelocity;
+
+            // TODO: Diffence between this and preferred back buffer?
+            int maxX = _graphics.PreferredBackBufferWidth - _ballTexture.Width;
+            int maxY = _graphics.PreferredBackBufferHeight - _ballTexture.Height;
+
+            // Ball hit one of the side goals, reset and score
+            if (_ballPosition.X > maxX)
+            {
+                _lhsScore++;
+                ResetBallPosition();
+            }
+            else if (_ballPosition.X < 0)
+            {
+                _rhsScore++;
+                ResetBallPosition();
+            }
+
+            if (_ballPosition.Y > maxY || _ballPosition.Y < 0)
+            {
+                _ballVelocity.Y *= -1;
+            }
         }
 
         private void ResetBallPosition()
