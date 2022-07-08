@@ -18,12 +18,14 @@ namespace project
         private Vector2 _rhsPlayerPosition;
         private Keys _rhsPlayerUpKey;
         private Keys _rhsPlayerDownKey;
-        private int _rhsScore;
 
         private Texture2D _lhsPlayerTexture;
         private Vector2 _lhsPlayerPosition;
         private Keys _lhsPlayerUpKey;
         private Keys _lhsPlayerDownKey;
+
+        SpriteFont _font;
+        private int _rhsScore;
         private int _lhsScore;
 
 
@@ -64,6 +66,7 @@ namespace project
             _ballTexture = Content.Load<Texture2D>("ball");
             _rhsPlayerTexture = Content.Load<Texture2D>("red");
             _lhsPlayerTexture = Content.Load<Texture2D>("blue");
+            _font = Content.Load<SpriteFont>("Font");
         }
 
         protected override void Update(GameTime gameTime)
@@ -158,6 +161,13 @@ namespace project
             _spriteBatch.Draw(_ballTexture, _ballPosition, Color.White);
             _spriteBatch.Draw(_rhsPlayerTexture, _rhsPlayerPosition, Color.White);
             _spriteBatch.Draw(_lhsPlayerTexture, _lhsPlayerPosition, Color.White);
+
+            Vector2 lhsScorePosition = new Vector2(0, 0);
+            _spriteBatch.DrawString(_font, _lhsScore.ToString(), lhsScorePosition, Color.White);
+
+            Vector2 rhsScorePosition = new Vector2(Window.ClientBounds.Width - 10, 0);
+            _spriteBatch.DrawString(_font, _rhsScore.ToString(), rhsScorePosition, Color.White);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
