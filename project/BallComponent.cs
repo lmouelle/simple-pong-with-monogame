@@ -8,7 +8,6 @@ namespace project
 {
     public class BallComponent : DrawableGameComponent, IBallManager
     {
-        private readonly Game1 _game1;
         private readonly IScoreNotificationSink _scoreNotificationSink;
         private Texture2D _ballTexture;
         private Vector2 _ballPosition;
@@ -17,7 +16,6 @@ namespace project
 
         public BallComponent(Game1 game, IScoreNotificationSink scoreNotificationSink) : base(game)
         {
-            _game1 = game;
             _scoreNotificationSink = scoreNotificationSink;
         }
 
@@ -66,8 +64,8 @@ namespace project
             _ballPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * _ballVelocity;
 
             // TODO: Diffence between this and preferred back buffer?
-            int maxX = _game1._graphics.PreferredBackBufferWidth - _ballTexture.Width;
-            int maxY = _game1._graphics.PreferredBackBufferHeight - _ballTexture.Height;
+            int maxX = Game.Window.ClientBounds.Width - _ballTexture.Width;
+            int maxY = Game.Window.ClientBounds.Height - _ballTexture.Height;
 
             // Ball hit one of the side goals, reset and score
             if (_ballPosition.X > maxX)
@@ -104,7 +102,7 @@ namespace project
             bool movesUp = random.Next() % 2 == 0;
             int yPos = movesUp ? 150 : -150;
 
-            _ballPosition = new Vector2(_game1._graphics.PreferredBackBufferWidth / 2, _game1._graphics.PreferredBackBufferHeight / 2);
+            _ballPosition = new Vector2(Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2);
             _ballVelocity = new Vector2(xPos, yPos);
         }
     }
