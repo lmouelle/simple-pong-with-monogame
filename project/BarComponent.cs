@@ -72,6 +72,16 @@ namespace project
                 _lhsPlayerPosition += new Vector2(0, PlayerMoveSpeed);
             }
 
+            int maxY = Game.Window.ClientBounds.Height - _lhsPlayerTexture.Height;
+            if (_lhsPlayerPosition.Y > maxY)
+            {
+                _lhsPlayerPosition = new Vector2(_lhsPlayerPosition.X, maxY);
+            }
+            if (_lhsPlayerPosition.Y < 0)
+            {
+                _lhsPlayerPosition = new Vector2(_lhsPlayerPosition.X, 0);
+            }
+
             var lhsRect = new Rectangle((int)_lhsPlayerPosition.X, (int)_lhsPlayerPosition.Y, _lhsPlayerTexture.Width, _lhsPlayerTexture.Height);
             var ballRect = _ballLocationProvider.GetLocation();
 
