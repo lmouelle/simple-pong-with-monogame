@@ -7,14 +7,7 @@ using System.Text;
 
 namespace project
 {
-    interface IBallManager
-    {
-        Rectangle GetLocation();
-
-        void Collide(PlayerKind playerKind);
-    }
-
-    internal class BarComponent : DrawableGameComponent
+    public class BarComponent : DrawableGameComponent
     {
         private readonly string _textureName;
         private readonly PlayerKind _playerKind;
