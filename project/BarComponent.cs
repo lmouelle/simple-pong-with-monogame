@@ -12,10 +12,10 @@ namespace project
         private readonly string _textureName;
         private readonly PlayerKind _playerKind;
         private readonly IBallManager _ballLocationProvider;
-        private Texture2D _lhsPlayerTexture;
-        private Vector2 _lhsPlayerPosition;
-        private Keys _lhsPlayerUpKey;
-        private Keys _lhsPlayerDownKey;
+        private Texture2D _playerTexture;
+        private Vector2 _playerPosition;
+        private Keys _playerUpKey;
+        private Keys _playerDownKey;
         private SpriteBatch _spriteBatch;
         private const float PlayerMoveSpeed = 3f;
 
@@ -24,23 +24,23 @@ namespace project
             _textureName = textureName;
             _playerKind = playerKind;
             _ballLocationProvider = ballLocationProvider;
-            _lhsPlayerPosition = startingPos;
+            _playerPosition = startingPos;
             if (playerKind == PlayerKind.Lhs)
             {
-                _lhsPlayerDownKey = Keys.Down;
-                _lhsPlayerUpKey = Keys.Up;
+                _playerDownKey = Keys.Down;
+                _playerUpKey = Keys.Up;
             }
             else
             {
-                _lhsPlayerDownKey = Keys.S;
-                _lhsPlayerUpKey = Keys.W;
+                _playerDownKey = Keys.S;
+                _playerUpKey = Keys.W;
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
-            _spriteBatch.Draw(_lhsPlayerTexture, _lhsPlayerPosition, Color.White);
+            _spriteBatch.Draw(_playerTexture, _playerPosition, Color.White);
             _spriteBatch.End();
 
             base.Draw(gameTime);
@@ -56,26 +56,26 @@ namespace project
         public override void Update(GameTime gameTime)
         {
             // Update player position based on keypress
-            if (Keyboard.GetState().IsKeyDown(_lhsPlayerUpKey))
+            if (Keyboard.GetState().IsKeyDown(_playerUpKey))
             {
-                _lhsPlayerPosition -= new Vector2(0, PlayerMoveSpeed);
+                _playerPosition -= new Vector2(0, PlayerMoveSpeed);
             }
-            else if (Keyboard.GetState().IsKeyDown(_lhsPlayerDownKey))
+            else if (Keyboard.GetState().IsKeyDown(_playerDownKey))
             {
-                _lhsPlayerPosition += new Vector2(0, PlayerMoveSpeed);
-            }
-
-            int maxY = Game.Window.ClientBounds.Height - _lhsPlayerTexture.Height;
-            if (_lhsPlayerPosition.Y > maxY)
-            {
-                _lhsPlayerPosition = new Vector2(_lhsPlayerPosition.X, maxY);
-            }
-            if (_lhsPlayerPosition.Y < 0)
-            {
-                _lhsPlayerPosition = new Vector2(_lhsPlayerPosition.X, 0);
+                _playerPosition += new Vector2(0, PlayerMoveSpeed);
             }
 
-            var lhsRect = new Rectangle((int)_lhsPlayerPosition.X, (int)_lhsPlayerPosition.Y, _lhsPlayerTexture.Width, _lhsPlayerTexture.Height);
+            int maxY = Game.Window.ClientBounds.Height - _playerTexture.Height;
+            if (_playerPosition.Y > maxY)
+            {
+                _playerPosition = new Vector2(_playerPosition.X, maxY);
+            }
+            if (_playerPosition.Y < 0)
+            {
+                _playerPosition = new Vector2(_playerPosition.X, 0);
+            }
+
+            var lhsRect = new Rectangle((int)_playerPosition.X, (int)_playerPosition.Y, _playerTexture.Width, _playerTexture.Height);
             var ballRect = _ballLocationProvider.GetLocation();
 
             if (lhsRect.Intersects(ballRect))
@@ -88,7 +88,7 @@ namespace project
 
         protected override void LoadContent()
         {
-            _lhsPlayerTexture = Game.Content.Load<Texture2D>(_textureName);
+            _playerTexture = Game.Content.Load<Texture2D>(_textureName);
             base.LoadContent();
         }
     }
